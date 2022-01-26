@@ -1,8 +1,10 @@
-import React, { Component, useRef, useState, useCallback } from 'react';
+import React, { Component, useRef, useState, useEffect, useCallback } from 'react';
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
+
+import axios from 'axios';
 
 import Webcam from "react-webcam";
 
@@ -10,6 +12,32 @@ import imgTest from '../public/resource/01.png';
 
 export default function Camera() {
   const [image, setImage]=useState('');
+
+  const [users, setUsers] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchUsers = async () => {
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null);
+      setUsers(null);
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true);
+      const response = await axios.get(
+        'http://localhost:3000/'
+      );
+      setUsers(response.data); // 데이터는 response.data 안에 들어있습니다.
+    } catch (e) {
+      setError(e);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   const videoConstraints = {
     width: 300,
     height: 300,
@@ -49,7 +77,9 @@ export default function Camera() {
         </h4>
 
         <div>
-          <div style={{position:'relative', width:'300px', height:'300px', border: '100px solid rgba(0,0,0,0.7)', zIndex: '1', marginBottom:'-300px'}}/>
+          <div style={{position:'relative', width:'300px', height:'300px', 
+                      borderTop: '100px solid rgba(0,0,0,0.7)', borderBottom: '100px solid rgba(0,0,0,0.7)', borderLeft: '50px solid rgba(0,0,0,0.7)', borderRight: '50px solid rgba(0,0,0,0.7)',
+                      zIndex: '1', marginBottom:'-300px'}}/>
           {image==''?<Webcam
             audio={false}
             ref={webcamRef}
@@ -57,7 +87,7 @@ export default function Camera() {
             videoConstraints={videoConstraints}
             />
             // :<img src={image}/>
-            :<img style={{position:'relative', width:'300px', height:'300px'}} src='/resource/01.png'/>
+            :<img style={{position:'relative', width:'300px', height:'300px', objectFit:'cover'}} src='/resource/00_XXO.png'/>
           }
         </div>
         
@@ -68,7 +98,7 @@ export default function Camera() {
             <button className={styles.buttonReverse} onClick={(e)=>{e.preventDefault(); setImage(''); }}>
               다시찍기
             </button>
-            <button className={styles.buttonMain} onClick={(e)=>{e.preventDefault(); setImage(''); }}>
+            <button className={styles.buttonMain} onClick={fetchUsers}>
               검사하기
             </button>
           </div>        
@@ -76,6 +106,10 @@ export default function Camera() {
             촬영하기
           </button>
         }
+        <div>
+          ????
+          {users}
+        </div>
 
       </main>
 
