@@ -1,17 +1,23 @@
-import React, { Component, useRef, useState, useEffect, useCallback } from 'react';
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import React, {
+  Component,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import styles from "../styles/Home.module.css";
 
-import axios from 'axios';
+import axios from "axios";
 
 import Webcam from "react-webcam";
 
-import imgTest from '../public/resource/01.png';
+import imgTest from "../public/resource/01.png";
 
 export default function Camera() {
-  const [image, setImage]=useState('');
+  const [image, setImage] = useState("");
 
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,39 +30,38 @@ export default function Camera() {
       setUsers(null);
       // loading 상태를 true 로 바꿉니다.
       setLoading(true);
-      const response = await axios.get(
-        'http://localhost:3000/'
-      );
-      setUsers(response.data); // 데이터는 response.data 안에 들어있습니다.
+
+      const response = await axios.post("http://localhost:3000/default", {
+        code: "ho",
+        name: "test",
+      });
+      console.log(response.data);
+      setUsers(response.data.name);
     } catch (e) {
       setError(e);
     }
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
 
   const videoConstraints = {
     width: 300,
     height: 300,
     // facingMode: "user"
-    facingMode: "environment"
+    facingMode: "environment",
   };
 
   const webcamRef = useRef(null);
-  const capture = useCallback(
-    () => {
-      const imageSrc = webcamRef.current.getScreenshot();
-      setImage(imgTest)
-      //setImage(imageSrc)
-    },
-    [webcamRef]
-  );
+  const capture = useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setImage(imgTest);
+    //setImage(imageSrc)
+  }, [webcamRef]);
 
   return (
-    
     <div className={styles.container}>
       <Head>
         <title>확인하기</title>
@@ -68,49 +73,76 @@ export default function Camera() {
         <h1 className={styles.title}>
           <h3 className={styles.description}>내 몸을 바로잡는 습관</h3>
           <Link href="/">
-            <a><span className={styles.mainColor}>PIO</span> 심플체커</a> 
+            <a>
+              <span className={styles.mainColor}>PIO</span> 심플체커
+            </a>
           </Link>
         </h1>
 
-        <h4>
-          가이드 라인에 맞추어 촬영을 해주세요!
-        </h4>
+        <h4>가이드 라인에 맞추어 촬영을 해주세요!</h4>
 
         <div>
-          <div style={{position:'relative', width:'300px', height:'300px', 
-                      borderTop: '100px solid rgba(0,0,0,0.7)', borderBottom: '100px solid rgba(0,0,0,0.7)', borderLeft: '50px solid rgba(0,0,0,0.7)', borderRight: '50px solid rgba(0,0,0,0.7)',
-                      zIndex: '1', marginBottom:'-300px'}}/>
-          {image==''?<Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            videoConstraints={videoConstraints}
+          <div
+            style={{
+              position: "relative",
+              width: "300px",
+              height: "300px",
+              borderTop: "100px solid rgba(0,0,0,0.7)",
+              borderBottom: "100px solid rgba(0,0,0,0.7)",
+              borderLeft: "50px solid rgba(0,0,0,0.7)",
+              borderRight: "50px solid rgba(0,0,0,0.7)",
+              zIndex: "1",
+              marginBottom: "-300px",
+            }}
+          />
+          {image == "" ? (
+            <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
             />
+          ) : (
             // :<img src={image}/>
-            :<img style={{position:'relative', width:'300px', height:'300px', objectFit:'cover'}} src='/resource/00_XXO.png'/>
-          }
+            <img
+              style={{
+                position: "relative",
+                width: "300px",
+                height: "300px",
+                objectFit: "cover",
+              }}
+              src="/resource/00_XXO.png"
+            />
+          )}
         </div>
-        
 
-
-        {image!=''?
+        {image != "" ? (
           <div>
-            <button className={styles.buttonReverse} onClick={(e)=>{e.preventDefault(); setImage(''); }}>
+            <button
+              className={styles.buttonReverse}
+              onClick={(e) => {
+                e.preventDefault();
+                setImage("");
+              }}
+            >
               다시찍기
             </button>
             <button className={styles.buttonMain} onClick={fetchUsers}>
               검사하기
             </button>
-          </div>        
-          :<button className={styles.capture} onClick={(e)=>{e.preventDefault(); capture(); }}>
+          </div>
+        ) : (
+          <button
+            className={styles.capture}
+            onClick={(e) => {
+              e.preventDefault();
+              capture();
+            }}
+          >
             촬영하기
           </button>
-        }
-        <div>
-          ????
-          {users}
-        </div>
-
+        )}
+        <div>{!users ? "???" : users}</div>
       </main>
 
       <footer className={styles.footer}>
@@ -119,9 +151,10 @@ export default function Camera() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          © 2021.<span className={styles.mainColor}> PIOMEDICAL.</span> All rights reserved.{' '}
+          © 2021.<span className={styles.mainColor}> PIOMEDICAL.</span> All
+          rights reserved.{" "}
         </a>
       </footer>
     </div>
-  )
+  );
 }
