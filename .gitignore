@@ -32,3 +32,7 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# ssl Key
+.key
+.crt
