@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
-import next from 'next'
+import $ from 'jquery'
 
 import axios from 'axios'
 
@@ -18,11 +18,25 @@ export default function Camera() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
-    // useEffect(() => {
-    //     setImageData(null);
-    //     setLoading(false);
-    //     setError(null);
-    // }, []);
+    useEffect(() => {
+        $(document).ready(function () {
+            /* OnChange Event*/
+            if (!('url' in window) && 'webkitURL' in window) {
+                window.URL = window.webkitURL
+            }
+            $('#camera-input').change(function (e) {
+                // $('#pic').attr('src', URL.createObjectURL(e.target.files[0]))
+                // var onChange_img = document.getElementById('pic')
+                // imageObj.src = URL.createObjectURL(e.target.files[0])
+                var reader = new FileReader()
+                reader.readAsDataURL(e.target.files[0])
+                reader.onloadend = function () {
+                    var base64data = reader.result
+                    setImage(base64data)
+                }
+            })
+        })
+    }, [image])
 
     const fetchImageData = async () => {
         try {
@@ -109,23 +123,25 @@ export default function Camera() {
                         }}
                     />
                     {image == '' ? (
-                        <Webcam
-                            audio={false}
-                            ref={webcamRef}
-                            screenshotFormat="image/png"
-                            videoConstraints={videoConstraints}
+                        <img
+                            style={{
+                                position: 'relative',
+                                width: '300px',
+                                height: '300px',
+                                objectFit: 'cover',
+                            }}
+                            src="/resource/00_XXO.png"
                         />
                     ) : (
-                        <img src={image} />
-                        // <img
-                        //     style={{
-                        //         position: 'relative',
-                        //         width: '300px',
-                        //         height: '300px',
-                        //         objectFit: 'cover',
-                        //     }}
-                        //     src="/resource/00_XXO.png"
-                        // />
+                        <img
+                            style={{
+                                position: 'relative',
+                                width: '300px',
+                                height: '300px',
+                                objectFit: 'cover',
+                            }}
+                            src={image}
+                        />
                     )}
                 </div>
 
@@ -146,15 +162,19 @@ export default function Camera() {
                         </button>
                     </div>
                 ) : (
-                    <button
-                        className={styles.capture}
-                        onClick={(e) => {
-                            e.preventDefault()
-                            capture()
-                        }}
-                    >
-                        촬영하기
-                    </button>
+                    <div>
+                        <label for="camera-input">
+                            <div className={styles.capture}>촬영하기</div>
+                        </label>
+                        <input
+                            style={{ display: 'none' }}
+                            type="file"
+                            id="camera-input"
+                            name="camera"
+                            capture="camera"
+                            accept="image/*"
+                        />
+                    </div>
                 )}
                 <div>
                     {!imageData ? (
