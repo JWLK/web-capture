@@ -9,7 +9,8 @@ import axios from 'axios'
 
 import Webcam from 'react-webcam'
 
-axios.defaults.baseURL = 'https://172.30.1.16:3000'
+axios.defaults.baseURL = 'https://localhost:3000'
+// axios.defaults.baseURL = 'https://172.20.10.5:3000'
 
 export default function Camera() {
     const [image, setImage] = useState('')
