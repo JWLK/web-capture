@@ -9,7 +9,8 @@ import axios from 'axios'
 
 import Webcam from 'react-webcam'
 
-axios.defaults.baseURL = 'https://172.30.1.16:3000'
+// axios.defaults.baseURL = 'https://localhost:3000'
+axios.defaults.baseURL = 'https://pio.swirly.me:3000/'
 
 export default function Camera() {
     const [image, setImage] = useState('')
@@ -163,7 +164,7 @@ export default function Camera() {
                     </div>
                 ) : (
                     <div>
-                        <label for="camera-input">
+                        <label htmlFor="camera-input">
                             <div className={styles.capture}>촬영하기</div>
                         </label>
                         <input
