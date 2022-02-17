@@ -20,6 +20,10 @@ export default function Camera() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
+    const [rgb0, setRgb0] = useState(null)
+    const [rgb1, setRgb1] = useState(null)
+    const [rgb2, setRgb2] = useState(null)
+
     useEffect(() => {
         $(document).ready(function () {
             /* OnChange Event*/
@@ -54,8 +58,11 @@ export default function Camera() {
                     imgSrc: image,
                 })
                 .then((res) => {
-                    setImageData(res.data.result.toString().split('\n', 4))
-                    console.log(res.data.result.toString().split('\n', 4))
+                    setImageData(res.data.result.toString().split('\n', 13))
+                    console.log(res.data.result.toString().split('\n', 13))
+                    setRgb0('rgb(' + imageData[5].substring(1, imageData[5].length - 1) + ')')
+                    setRgb1('rgb(' + imageData[6].substring(1, imageData[6].length - 1) + ')')
+                    setRgb2('rgb(' + imageData[7].substring(1, imageData[7].length - 1) + ')')
                 })
         } catch (e) {
             setError(e)
@@ -177,6 +184,10 @@ export default function Camera() {
                                 e.preventDefault()
                                 setImage('')
                                 setImageData('')
+                                //Clear Color
+                                setRgb0(null)
+                                setRgb1(null)
+                                setRgb2(null)
                             }}
                         >
                             다시찍기
@@ -206,7 +217,48 @@ export default function Camera() {
                     ) : (
                         <>
                             {JSON.parse(imageData[1].toLowerCase()) ? (
-                                <div>QR가 존재합니다.</div>
+                                <div>
+                                    {/* <div
+                                        style={{
+                                            display: 'flex',
+                                            width: '200px',
+                                            height: '50px',
+                                            background: '#efefef',
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                width: '3px',
+                                                height: '50px',
+                                                margin: '0px 15px 0px 50px',
+                                                background: rgb0,
+                                            }}
+                                        />
+                                        <div
+                                            style={{
+                                                width: '3px',
+                                                height: '50px',
+                                                margin: '0px 30px',
+                                                background: rgb1,
+                                            }}
+                                        />
+                                        <div
+                                            style={{
+                                                width: '3px',
+                                                height: '50px',
+                                                margin: '0px 50px 0px 15px',
+                                                background: rgb2,
+                                            }}
+                                        />
+                                    </div> */}
+                                    <div className={styles.description}>결과</div>
+                                    <div style={{ marginTop: '20px', fontSize: '21px', lineHeight: '34px' }}>
+                                        PDG농도 <span style={{ color: '#E50921' }}>8ug/ml </span>입니다.
+                                        <br />
+                                        임신여부<span style={{ color: '#E50921', fontWeight: 'bold' }}> 양성</span>
+                                        입니다.
+                                    </div>
+                                </div>
                             ) : (
                                 <div style={{ textAlign: 'center', margin: '10px' }}>
                                     QR코드를 확인할 수 없습니다.
