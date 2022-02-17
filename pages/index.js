@@ -52,20 +52,20 @@ export default function Home() {
                     <Link href="/checker">
                         <a className={styles.card}>
                             <h2>
-                                <Icon icon={ic_qr_code_scanner} size={54} /> [DEV] 확인하기{' '}
+                                <Icon icon={ic_qr_code_scanner} size={54} /> 확인하기{' '}
                             </h2>
                             <p>촬영을 통해 몸 건강상태를 확인해 보세요!</p>
                         </a>
                     </Link>
 
-                    <Link href="/camera">
+                    {/* <Link href="/camera">
                         <a className={styles.card}>
                             <h2>
                                 <Icon icon={ic_qr_code_scanner} size={54} /> 확인하기{' '}
                             </h2>
                             <p>촬영을 통해 몸 건강상태를 확인해 보세요!</p>
                         </a>
-                    </Link>
+                    </Link> */}
 
                     <Link href="/camera">
                         <a className={styles.card}>
