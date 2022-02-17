@@ -183,7 +183,11 @@ export default function Camera() {
                     ) : (
                         <>
                             {JSON.parse(imageData[1].toLowerCase()) ? (
-                                <div>QR가 존재합니다.</div>
+                                <div>
+                                    <div>{imageData[2]}</div>
+                                    <div>{imageData[3]}</div>
+                                    <div>{imageData[4]}</div>
+                                </div>
                             ) : (
                                 <div style={{ textAlign: 'center', margin: '10px' }}>
                                     QR코드를 확인할 수 없습니다.
