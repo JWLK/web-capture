@@ -9,8 +9,8 @@ import axios from 'axios'
 
 import Webcam from 'react-webcam'
 
-// axios.defaults.baseURL = 'https://localhost:3000'
-axios.defaults.baseURL = 'https://pio.swirly.me:3000/'
+axios.defaults.baseURL = 'https://192.168.1.112:3000'
+// axios.defaults.baseURL = 'https://pio.swirly.me:3000/'
 
 export default function Camera() {
     const [image, setImage] = useState('')
@@ -184,9 +184,13 @@ export default function Camera() {
                         <>
                             {JSON.parse(imageData[1].toLowerCase()) ? (
                                 <div>
-                                    <div>{imageData[2]}</div>
-                                    <div>{imageData[3]}</div>
-                                    <div>{imageData[4]}</div>
+                                    <span>QR가 존재합니다.</span>
+                                    <div>
+                                        <div>{imageData[2]}</div>
+                                        <div>{imageData[3]}</div>
+                                        <div>{imageData[4]}</div>
+                                    </div>
+                                    <span>확인된 색상값.</span>
                                 </div>
                             ) : (
                                 <div style={{ textAlign: 'center', margin: '10px' }}>
