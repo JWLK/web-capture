@@ -52,8 +52,8 @@ export default function Camera() {
                     imgSrc: image,
                 })
                 .then((res) => {
-                    setImageData(res.data.result.toString().split('\n', 5))
-                    console.log(res.data.result.toString().split('\n', 5))
+                    setImageData(res.data.result.toString().split('\n', 8))
+                    console.log(res.data.result.toString().split('\n', 8))
                 })
         } catch (e) {
             setError(e)
