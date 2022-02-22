@@ -11,7 +11,7 @@ import axios from 'axios'
 import Webcam from 'react-webcam'
 
 // axios.defaults.baseURL = 'https://localhost:3000'
-axios.defaults.baseURL = 'https://pio.swirly.me:3000/'
+axios.defaults.baseURL = 'https://med.piomedical.co.kr:3000/'
 
 export default function Camera() {
     const [image, setImage] = useState('')
